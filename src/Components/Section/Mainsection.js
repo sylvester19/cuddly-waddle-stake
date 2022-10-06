@@ -1,4 +1,17 @@
+import React, { useEffect, useState } from "react";
+import Metamask from '../../assets/Images/Wallet/metamask.png'
+import WalletConnect from '../../assets/Images/Wallet/wallet_connect.png'
+import Rainbow from '../../assets/Images/Wallet/rainbow.png'
+import { MetamaskConnect, WalletConnectFunction } from '../../Wallet/index'
+import './Popup.css';
+
+
 export default function Mainsection() {
+
+    const [openpopup, setOpenpopup] = useState(false);
+
+
+
     return (
         <>
             <section className="mainsec">
@@ -39,14 +52,39 @@ export default function Mainsection() {
                                     </li>
                                 </ul>
                             </div>
+
                             {/* Connect Wallet Button  */}
-                            <a href="" className="wallet_btn btn">
+                            <a href="#" onClick={() => setOpenpopup(true)} className="wallet_btn btn">
                                 Connect Wallet
                             </a>
                         </div>
                     </div>
                 </div>
             </section>
+
+            {openpopup && (
+                <>
+                    <div className='checkout'>
+                        <div className='maincheckout'>
+                            <button className='btn-close' onClick={() => setOpenpopup(false)}>x</button>
+                            <div className="row">
+                                <div className="col-md-4">
+                                    <img src={Metamask} onClick={MetamaskConnect} className="wallet_icon" alt="Metamask" />
+                                </div>
+                                <div className="col-md-4">
+                                    <img src={WalletConnect} onClick={WalletConnectFunction} className="wallet_icon" alt="Wallet Connect" />
+                                </div>
+                                <div className="col-md-4">
+                                    <img src={Rainbow} className="wallet_icon" alt="Rain Bow" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
+
+
         </>
     );
 }
