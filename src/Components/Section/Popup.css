@@ -43,5 +43,15 @@
 .wallet_icon{
   width: 100%;
   cursor: pointer;
- border-radius: 10px;
+
+}
+
+.iekbcc0{
+ background: #2E8F8A !important;
+ color: white !important;
+}
+
+.design-button{
+  width: 166px;
+    height: 41px;
 }
