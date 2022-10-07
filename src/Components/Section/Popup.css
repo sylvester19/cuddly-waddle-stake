@@ -46,9 +46,37 @@
 
 }
 
+#rk_connect_title{
+color: #267d79 !important;
+}
+.ju367v2q{
+  color: #267d79 !important;
+}
+
 .iekbcc0{
- background: #2E8F8A !important;
- color: white !important;
+  color: #267d79 !important;
+}
+.ju367vz{
+  background-color: #151C24 !important;
+}
+.ju367v9c{
+  background: linear-gradient(90deg, #267d79, #37a6a0 25%, #3aaea8 50%, #37a6a0 75%, #267d79) !important;
+  letter-spacing: .5px;
+    padding: 0;
+    border-radius: 15px;
+    border-top-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    color: #fff !important;
+    border: 0;
+    background: var(--blue);
+    background: linear-gradient(90deg, #267d79, #37a6a0 25%, #3aaea8 50%, #37a6a0 75%, #267d79);
+    transition: all .3s ease;
+    min-width: 250px !important;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
 }
 
 .design-button{

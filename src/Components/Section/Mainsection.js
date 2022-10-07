@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './Popup.css';
-import Metamask from '../../assets/Images/Wallet/metamask.png'
-import WalletConnect from '../../assets/Images/Wallet/wallet_connect.png'
-import Rainbow from '../../assets/Images/Wallet/rainbow.png'
-import { MetamaskConnect, WalletConnectFunction } from '../../Wallet/index'
-import { RainbowWallet } from '../../Wallet/Rainbow'
+
 import "@rainbow-me/rainbowkit/styles.css";
 import {
     ConnectButton,
@@ -82,46 +78,18 @@ export default function Mainsection() {
                                 </ul>
                             </div>
 
-                            {/* Connect Wallet Button  */}
-                            <a href="#" onClick={() => setOpenpopup(true)} className="wallet_btn btn">
-                                Connect Wallet
-                            </a>
+                            <WagmiConfig client={wagmiClient}>
+                                <RainbowKitProvider chains={chains}>
+                                    <div>
+                                        <ConnectButton />
+                                    </div>
+                                </RainbowKitProvider>
+                            </WagmiConfig>
+
                         </div>
                     </div>
                 </div>
             </section>
-
-            {openpopup && (
-                <>
-                    <div className='checkout'>
-                        <div className='maincheckout'>
-                            <button className='btn-close' onClick={() => setOpenpopup(false)}>x</button>
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <img src={Metamask} onClick={MetamaskConnect} className="wallet_icon" alt="Metamask" />
-                                    <button type="submit" onClick={MetamaskConnect} className="iekbcc0 design-button">Metamask</button>
-                                </div>
-                                <div className="col-md-4">
-                                    <img src={WalletConnect} onClick={WalletConnectFunction} className="wallet_icon" alt="Wallet Connect" />
-                                    <button type="submit" onClick={WalletConnectFunction} className="iekbcc0 design-button">Wallet Connect</button>
-                                </div>
-                                <div className="col-md-4">
-                                    <img src={Rainbow} className="wallet_icon" alt="Rain Bow" />
-                                    <WagmiConfig client={wagmiClient}>
-                                        <RainbowKitProvider chains={chains}>
-                                            <div>
-                                                <ConnectButton className="button-custom" />
-                                            </div>
-                                        </RainbowKitProvider>
-                                    </WagmiConfig>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </>
-            )}
-
-
 
         </>
     );
