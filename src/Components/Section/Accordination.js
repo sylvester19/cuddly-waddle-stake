@@ -18,7 +18,7 @@ export default function SortSection() {
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
     useEffect(() => {
-        // getPools();
+        getPools();
     }, [])
 
     setTimeout(() => {
