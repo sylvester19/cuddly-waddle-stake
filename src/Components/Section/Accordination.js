@@ -4,7 +4,7 @@ import { stakingabi, stakeAddress } from "../../stakingabi";
 import { tokenABI, tokenAddress } from "../../tokenabi";
 import { useSigner, useProvider } from 'wagmi'
 import { ethers } from 'ethers';
-
+import ClaimedReward from './ClaimedReward'
 
 
 export default function SortSection() {
@@ -128,7 +128,7 @@ export default function SortSection() {
                                                 <div className="col-md-5 col-6">
                                                     <div className="row">
                                                         <div className="col-md-3">
-                                                            <span className="st_heading">N/A</span>
+                                                            <ClaimedReward pool={index} signer={signer} />
                                                             <span className="st_info">Staked BKB</span>
                                                         </div>
                                                         <div className="col-md-3">
@@ -169,7 +169,7 @@ export default function SortSection() {
                                                         <div className="Blockombat-form">
                                                             <div className="title">Your BKB Balance</div>
                                                             <div className="total">
-                                                                <span>N/A</span>
+                                                                <ClaimedReward pool={index} signer={signer} />
                                                             </div>
                                                             <div className="inputs">
                                                                 <div className="input-group">
@@ -202,7 +202,7 @@ export default function SortSection() {
                                                         <div className="Blockombat-form">
                                                             <div className="title">Staked BKB Balance</div>
                                                             <div className="total">
-                                                                <span>N/A</span>
+                                                                <ClaimedReward pool={index} signer={signer} />
                                                             </div>
                                                             <div className="inputs">
                                                                 <div className="input-group">
@@ -234,7 +234,7 @@ export default function SortSection() {
                                                         <div className="Blockombat-form">
                                                             <div className="title">BKB Earned</div>
                                                             <div className="total">
-                                                                <span>N/A</span>
+                                                                <ClaimedReward pool={index} signer={signer} />
                                                             </div>
                                                             <div className="inputs">
                                                                 <button
