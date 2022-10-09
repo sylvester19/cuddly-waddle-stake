@@ -17,7 +17,6 @@ export default function SortSection() {
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
-    console.log("Contrac=>", stakeContract)
     useEffect(() => {
         getPools();
     }, [])
@@ -25,6 +24,7 @@ export default function SortSection() {
     setTimeout(() => {
         getPools();
     }, 1000)
+
 
     const getPools = async () => {
         const noofPools = await stakeContract?.poolLength()
@@ -41,21 +41,21 @@ export default function SortSection() {
         setStakeValue(e.target.value);
     }
 
-    const stakeTokens = async () => {
+    const stakeTokens = async (index) => {
         try {
             let approve = await tokenContract.approve(stakeAddress, stakeValue);
             await approve.wait();
-            let stake = await stakeContract.stakeTokens(4, stakeValue);
+            let stake = await stakeContract.stakeTokens(index, stakeValue);
             await stake.wait();
             console.log("Staked successfully", stake);
         } catch (error) {
-            console.log(error);
+            alert(error.message)
         }
     }
 
-    async function unstakeTokens() {
+    async function unstakeTokens(index) {
         try {
-            let stake = await stakeContract.unstakeTokens(4);
+            let stake = await stakeContract.unstakeTokens(index);
             await stake.wait();
             console.log("Staked successfully", stake);
         } catch (err) {
@@ -63,7 +63,16 @@ export default function SortSection() {
         }
     }
 
-    console.log("poolDataArray", poolDataArray);
+    async function ClaimToken(index) {
+        try {
+            let stake = await stakeContract.claimRewards(index);
+            await stake.wait();
+            console.log("Staked successfully", stake);
+        } catch (err) {
+            alert(err.message)
+        }
+    }
+
     if (poolDataArray.length === 0) {
         return (<div style={{ paddingTop: '50px' }}><center>Loding please wait....</center></div>)
     }
@@ -75,7 +84,6 @@ export default function SortSection() {
                     <div className="col-md-12">
                         <div className="accordion" id="accordionPanelsStayOpenExample">
                             {poolDataArray?.map((item, index) => {
-                                console.log(index)
                                 return (
                                     <div className="accordion-item">
                                         <h2
@@ -182,7 +190,7 @@ export default function SortSection() {
                                                                 <button
                                                                     type="button"
                                                                     className="btn btn-default form-button"
-                                                                    onClick={stakeTokens}
+                                                                    onClick={() => stakeTokens(index)}
                                                                 >
                                                                     STAKE
                                                                 </button>
@@ -214,7 +222,7 @@ export default function SortSection() {
                                                                 <button
                                                                     type="button"
                                                                     className="btn btn-default form-button"
-                                                                    onClick={unstakeTokens}
+                                                                    onClick={() => unstakeTokens(index)}
                                                                 >
                                                                     Unstake
                                                                 </button>
@@ -232,6 +240,7 @@ export default function SortSection() {
                                                                 <button
                                                                     type="button"
                                                                     className="btn btn-default form-button"
+                                                                    onClick={() => ClaimToken(index)}
                                                                 >
                                                                     Claim
                                                                 </button>
