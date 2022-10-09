@@ -17,6 +17,7 @@ export default function SortSection() {
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
+    console.log("Contrac=>", stakeContract)
     useEffect(() => {
         getPools();
     }, [])
@@ -41,7 +42,6 @@ export default function SortSection() {
     }
 
     const stakeTokens = async () => {
-
         try {
             let approve = await tokenContract.approve(stakeAddress, stakeValue);
             await approve.wait();
@@ -50,6 +50,16 @@ export default function SortSection() {
             console.log("Staked successfully", stake);
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    async function unstakeTokens() {
+        try {
+            let stake = await stakeContract.unstakeTokens(4);
+            await stake.wait();
+            console.log("Staked successfully", stake);
+        } catch (err) {
+            alert(err.message)
         }
     }
 
@@ -204,6 +214,7 @@ export default function SortSection() {
                                                                 <button
                                                                     type="button"
                                                                     className="btn btn-default form-button"
+                                                                    onClick={unstakeTokens}
                                                                 >
                                                                     Unstake
                                                                 </button>
