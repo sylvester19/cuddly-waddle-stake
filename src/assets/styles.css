@@ -539,7 +539,7 @@ header .inputgrp .inputitem .input {
 
 .accordian_section .accordion-item:hover::after {
     position: absolute;
-    content: " ";
+    
     width: 100%;
     height: 100%;
     left: 0;
