@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from 'ethers';
-import { stakingabi, stakeAddress } from "../../stakingabi";
-import { fetchFeeData } from "@wagmi/core";
+import { tokenABI, tokenAddress } from "../../tokenabi";
 
 
 
 
-export default function StakedBKB(props) {
+
+export default function BKBbalance(props) {
 
     const [claimedreward, setClaimedreward] = useState([]);
 
@@ -15,9 +15,9 @@ export default function StakedBKB(props) {
     }, [])
 
     async function fetchFeeData(props) {
-        const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props.signer);
-        let stake = await stakeContract.userInfo(props.pool, props.signer.getAddress());
-        let data = stake?.toString();
+        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, props.signer);
+        const balance = await tokenContract.balanceOf(props.signer.getAddress())
+        let data = balance.toString();
         setClaimedreward(data)
     }
 

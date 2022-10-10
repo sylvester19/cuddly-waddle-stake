@@ -23,7 +23,7 @@ export default function ClaimedReward(props) {
 
 
     return (
-        <span className="st_heading">{claimedreward}</span>
+        <span className="st_heading">{claimedreward} DTKN</span>
     );
 
 }

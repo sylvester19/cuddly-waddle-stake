@@ -6,6 +6,8 @@ import { useSigner, useProvider } from 'wagmi'
 import { ethers } from 'ethers';
 import ClaimedReward from './ClaimedReward'
 import StakedBKB from './StakedBKB'
+import BKBbalance from './BKBbalance'
+import APR from './APR'
 import { ToastContainer, toast } from 'react-toastify';
 
 
@@ -19,6 +21,7 @@ export default function SortSection() {
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
+    console.log("Cont=>", tokenContract)
     useEffect(() => {
         getPools();
     }, [])
@@ -29,7 +32,7 @@ export default function SortSection() {
 
 
     const getPools = async () => {
-        const noofPools = await stakeContract?.poolLength()
+        const noofPools = await stakeContract.poolLength()
         const totalPools = noofPools?.toNumber();
         const poolData = [];
         for (let i = 0; i < totalPools; i++) {
@@ -82,7 +85,7 @@ export default function SortSection() {
     }
 
     if (poolDataArray.length === 0) {
-        return (<div style={{ paddingTop: '50px' }}><center>Loding please wait....</center></div>)
+        return (<div style={{ paddingTop: '50px' }}><center>Please Connect your wallet to continue..</center></div>)
     }
 
     return (
@@ -141,12 +144,12 @@ export default function SortSection() {
                                                             <span className="st_info">Staked BKB</span>
                                                         </div>
                                                         <div className="col-md-3">
-                                                            <span className="st_heading">N/A</span>
+                                                            <ClaimedReward pool={index} signer={signer} />
                                                             <span className="st_info">Earned BKB</span>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <span className="st_heading">
-                                                                0.00%
+                                                                <APR pool={index} />
                                                                 <sup>
                                                                     <img
                                                                         src="images/info.svg"
@@ -178,7 +181,7 @@ export default function SortSection() {
                                                         <div className="Blockombat-form">
                                                             <div className="title">Your BKB Balance</div>
                                                             <div className="total">
-                                                                <ClaimedReward pool={index} signer={signer} />
+                                                                <BKBbalance signer={signer} />
                                                             </div>
                                                             <div className="inputs">
                                                                 <div className="input-group">

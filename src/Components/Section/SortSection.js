@@ -57,6 +57,7 @@ export default function SortSection() {
                                         defaultValue=""
                                         id="Staked"
                                         disabled=""
+                                        checked="true"
                                     />
                                     <label
                                         className="form-check-label its_title"
@@ -65,7 +66,7 @@ export default function SortSection() {
                                         Staked only
                                     </label>
                                 </div>
-                                <div className="form-check mt-md-4">
+                                {/* <div className="form-check mt-md-4">
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
@@ -78,7 +79,7 @@ export default function SortSection() {
                                     >
                                         Show ended
                                     </label>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
