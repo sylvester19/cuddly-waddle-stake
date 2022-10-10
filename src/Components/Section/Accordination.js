@@ -17,11 +17,10 @@ export default function SortSection() {
     const provider = useProvider();
     const [stakeValue, setStakeValue] = useState(0);
     const [poolDataArray, setPoolData] = useState([]);
-
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
-    console.log("Cont=>", tokenContract)
+
     useEffect(() => {
         getPools();
     }, [])
