@@ -8,6 +8,7 @@ import {
   getDefaultWallets,
   RainbowKitProvider
 } from "@rainbow-me/rainbowkit";
+import 'react-toastify/dist/ReactToastify.css';
 
 const { chains, provider } = configureChains(
   [chain.polygonMumbai],
@@ -28,19 +29,19 @@ const wagmiClient = createClient({
 export default function App() {
   return (
     <WagmiConfig client={wagmiClient}>
-    <RainbowKitProvider chains={chains}>
-    <section class="mainwrapper">
-      <div class="container-fluid">
-        <div class="row flexcontainer">
-          <Sidebox />
-          <Rightbox />
-        </div>
-      </div>
-      
-    </section>
-    </RainbowKitProvider>
+      <RainbowKitProvider chains={chains}>
+        <section class="mainwrapper">
+          <div class="container-fluid">
+            <div class="row flexcontainer">
+              <Sidebox />
+              <Rightbox />
+            </div>
+          </div>
+
+        </section>
+      </RainbowKitProvider>
     </WagmiConfig>
-    
+
   );
 }
 

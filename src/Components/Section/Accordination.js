@@ -5,6 +5,8 @@ import { tokenABI, tokenAddress } from "../../tokenabi";
 import { useSigner, useProvider } from 'wagmi'
 import { ethers } from 'ethers';
 import ClaimedReward from './ClaimedReward'
+import StakedBKB from './StakedBKB'
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function SortSection() {
@@ -47,8 +49,10 @@ export default function SortSection() {
             await approve.wait();
             let stake = await stakeContract.stakeTokens(index, stakeValue);
             await stake.wait();
+            toast.success("BKB staked successfully");
             console.log("Staked successfully", stake);
         } catch (error) {
+            toast.error(error.message);
             alert(error.message)
         }
     }
@@ -57,8 +61,10 @@ export default function SortSection() {
         try {
             let stake = await stakeContract.unstakeTokens(index);
             await stake.wait();
+            toast.success("BKB unstaked successfully");
             console.log("Staked successfully", stake);
         } catch (err) {
+            toast.error(err.message);
             alert(err.message)
         }
     }
@@ -67,8 +73,10 @@ export default function SortSection() {
         try {
             let stake = await stakeContract.claimRewards(index);
             await stake.wait();
-            console.log("Staked successfully", stake);
+            toast.success("Rewards successfully claimed");
+            console.log("Clain", stake);
         } catch (err) {
+            toast.error(err.message);
             alert(err.message)
         }
     }
@@ -79,6 +87,7 @@ export default function SortSection() {
 
     return (
         <>
+            <ToastContainer />
             <section className="accordian_section">
                 <div className="row">
                     <div className="col-md-12">
@@ -128,7 +137,7 @@ export default function SortSection() {
                                                 <div className="col-md-5 col-6">
                                                     <div className="row">
                                                         <div className="col-md-3">
-                                                            <ClaimedReward pool={index} signer={signer} />
+                                                            <StakedBKB pool={index} signer={signer} />
                                                             <span className="st_info">Staked BKB</span>
                                                         </div>
                                                         <div className="col-md-3">
@@ -202,7 +211,7 @@ export default function SortSection() {
                                                         <div className="Blockombat-form">
                                                             <div className="title">Staked BKB Balance</div>
                                                             <div className="total">
-                                                                <ClaimedReward pool={index} signer={signer} />
+                                                                <StakedBKB pool={index} signer={signer} />
                                                             </div>
                                                             <div className="inputs">
                                                                 <div className="input-group">
