@@ -44,7 +44,7 @@ export default function SortSection() {
         setPoolData(poolData);
     }
 
-    const handleInputChange = (e,index) => {
+    const handleInputChange = (e, index) => {
         setStakeValue({
             value: e.target.value,
             index: index
@@ -54,9 +54,10 @@ export default function SortSection() {
     const stakeTokens = async (index) => {
         toast.info("Staking in progress...");
         try {
-            let approve = await tokenContract.approve(stakeAddress, stakeValue.value);
+            let amount = ethers.utils.parseEther(stakeValue.value.toString());
+            let approve = await tokenContract.approve(stakeAddress, amount);
             await approve.wait();
-            let stake = await stakeContract.stakeTokens(index, stakeValue.value);
+            let stake = await stakeContract.stakeTokens(index, amount);
             await stake.wait();
             toast.success("BKB staked successfully");
             /*console.log("Staked successfully", stake);*/
@@ -100,7 +101,7 @@ export default function SortSection() {
         }
     }
 
-    function setMaxStakeValue(index){
+    function setMaxStakeValue(index) {
         const tokenBal = document.getElementById('tokenBal').textContent;
         document.getElementById(`stakeValue${index}`).value = tokenBal;
         setStakeValue({
@@ -215,11 +216,11 @@ export default function SortSection() {
                                                                     <input
                                                                         className="input"
                                                                         type="number"
-                                                                        min={0}                                                                  
-                                                                        step="1"      
-                                                                        value = { index === stakeValue.index ? stakeValue.value : 0 }                                                            
+                                                                        min={0}
+                                                                        step="1"
+                                                                        value={index === stakeValue.index ? stakeValue.value : 0}
                                                                         id={`stakeValue${index}`}
-                                                                        onChange={(e)=>handleInputChange(e, index)}
+                                                                        onChange={(e) => handleInputChange(e, index)}
                                                                     />
                                                                     <span
                                                                         className="text"
