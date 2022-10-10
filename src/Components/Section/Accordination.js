@@ -21,7 +21,6 @@ export default function SortSection() {
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
-    console.log("Cont=>", tokenContract)
     useEffect(() => {
         getPools();
     }, [])
@@ -47,6 +46,7 @@ export default function SortSection() {
     }
 
     const stakeTokens = async (index) => {
+        toast.info("Staking in progress...");
         try {
             let approve = await tokenContract.approve(stakeAddress, stakeValue);
             await approve.wait();
@@ -61,6 +61,7 @@ export default function SortSection() {
     }
 
     async function unstakeTokens(index) {
+        toast.info("Unstaking in progress...");
         try {
             let stake = await stakeContract.unstakeTokens(index);
             await stake.wait();
@@ -73,6 +74,7 @@ export default function SortSection() {
     }
 
     async function ClaimToken(index) {
+        toast.info("Claiming in progress...");
         try {
             let stake = await stakeContract.claimRewards(index);
             await stake.wait();
@@ -90,7 +92,9 @@ export default function SortSection() {
 
     return (
         <>
-            <ToastContainer />
+            <ToastContainer 
+                position="top-center"
+                />
             <section className="accordian_section">
                 <div className="row">
                     <div className="col-md-12">
@@ -189,7 +193,7 @@ export default function SortSection() {
                                                                         className="input"
                                                                         type="number"
                                                                         min={0}
-                                                                        step="0.1"
+                                                                        step="1"
                                                                         onChange={handleInputChange}
                                                                     />
                                                                     <span
