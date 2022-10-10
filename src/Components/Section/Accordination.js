@@ -17,6 +17,7 @@ export default function SortSection() {
     const provider = useProvider();
     const [stakeValue, setStakeValue] = useState(0);
     const [poolDataArray, setPoolData] = useState([]);
+    const [maxstack, setMaxStack] = useState([]);
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
@@ -69,6 +70,14 @@ export default function SortSection() {
             toast.error(err.message);
             alert(err.message)
         }
+    }
+
+    async function unstakeTokensMAX(index) {
+        const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
+        let stake = await stakeContract.userInfo(index, signer.getAddress());
+        let data = stake.toString();
+        setMaxStack(data)
+        return false;
     }
 
     async function ClaimToken(index) {
@@ -188,12 +197,14 @@ export default function SortSection() {
                                                                         className="input"
                                                                         type="number"
                                                                         min={0}
+                                                                        value={stakeValue}
                                                                         step="0.1"
                                                                         onChange={handleInputChange}
                                                                     />
                                                                     <span
                                                                         className="text"
                                                                         style={{ cursor: "pointer" }}
+                                                                        onClick={() => setStakeValue(100)}
                                                                     >
                                                                         100 MAX
                                                                     </span>
@@ -219,13 +230,13 @@ export default function SortSection() {
                                                                 <div className="input-group">
                                                                     <input
                                                                         className="input"
-                                                                        type="number"
-                                                                        min={0}
-                                                                        step="0.1"
+                                                                        type="text"
+                                                                        value={maxstack}
                                                                     />
                                                                     <span
                                                                         className="text"
                                                                         style={{ cursor: "pointer" }}
+                                                                        onClick={() => unstakeTokensMAX(index)}
                                                                     >
                                                                         MAX
                                                                     </span>
