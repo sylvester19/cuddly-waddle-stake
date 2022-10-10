@@ -76,7 +76,7 @@ export default function SortSection() {
     async function unstakeTokensMAX(index) {
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
         let stake = await stakeContract.userInfo(index, signer.getAddress());
-        let data = stake.toString();
+        let data = stake.amount.toString();
         setMaxStack(data)
         return false;
     }
