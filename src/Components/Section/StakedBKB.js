@@ -18,12 +18,11 @@ export default function StakedBKB(props) {
     async function fetchFeeData(props) {
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props.signer);
         let stake = await stakeContract.userInfo(props.pool, props.signer.getAddress());
-        let data = stake?.toString();
-        setClaimedreward(data)
+        setClaimedreward(stake.amount.toString())
     }
 
     return (
-        <span className="st_heading">{claimedreward} DTKN</span>
+        <span className="st_heading">{claimedreward}</span>
     );
 
 }

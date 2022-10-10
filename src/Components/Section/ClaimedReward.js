@@ -17,13 +17,13 @@ export default function ClaimedReward(props) {
     async function fetchFeeData(props) {
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props?.signer);
         let stake = await stakeContract?.totalRewardsClaimed();
-        let data = stake?.toString();
+        let data = stake.toString();
         setClaimedreward(data)
     }
 
 
     return (
-        <span className="st_heading">{claimedreward} DTKN</span>
+        <span className="st_heading">{claimedreward}</span>
     );
 
 }
