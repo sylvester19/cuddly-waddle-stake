@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import { stakingabi, stakeAddress } from "../../stakingabi";
-import { fetchFeeData } from "@wagmi/core";
+import { Poolinfo } from './Poolinfo'
 
 
 
@@ -12,6 +12,7 @@ export default function StakedBKB(props) {
 
     useEffect(() => {
         fetchFeeData(props)
+        Poolinfo(props)
     }, [])
 
     async function fetchFeeData(props) {

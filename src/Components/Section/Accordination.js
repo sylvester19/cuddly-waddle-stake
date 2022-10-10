@@ -17,7 +17,6 @@ export default function SortSection() {
     const provider = useProvider();
     const [stakeValue, setStakeValue] = useState(0);
     const [poolDataArray, setPoolData] = useState([]);
-
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
@@ -53,7 +52,7 @@ export default function SortSection() {
             let stake = await stakeContract.stakeTokens(index, stakeValue);
             await stake.wait();
             toast.success("BKB staked successfully");
-            console.log("Staked successfully", stake);
+            /*console.log("Staked successfully", stake);*/
         } catch (error) {
             toast.error(error.message);
             alert(error.message)
@@ -66,7 +65,7 @@ export default function SortSection() {
             let stake = await stakeContract.unstakeTokens(index);
             await stake.wait();
             toast.success("BKB unstaked successfully");
-            console.log("Staked successfully", stake);
+            /*console.log("unstaked successfully", stake);*/
         } catch (err) {
             toast.error(err.message);
             alert(err.message)
@@ -79,7 +78,7 @@ export default function SortSection() {
             let stake = await stakeContract.claimRewards(index);
             await stake.wait();
             toast.success("Rewards successfully claimed");
-            console.log("Clain", stake);
+            /*console.log("Clain", stake);*/
         } catch (err) {
             toast.error(err.message);
             alert(err.message)
