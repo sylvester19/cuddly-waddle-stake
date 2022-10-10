@@ -15,7 +15,10 @@ export default function SortSection() {
 
     const { data: signer } = useSigner()
     const provider = useProvider();
-    const [stakeValue, setStakeValue] = useState(0);
+    const [stakeValue, setStakeValue] = useState({
+        value: 0,
+        index: 0
+    });
     const [poolDataArray, setPoolData] = useState([]);
     const [maxstack, setMaxStack] = useState([]);
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
@@ -41,16 +44,19 @@ export default function SortSection() {
         setPoolData(poolData);
     }
 
-    const handleInputChange = (e) => {
-        setStakeValue(e.target.value);
+    const handleInputChange = (e,index) => {
+        setStakeValue({
+            value: e.target.value,
+            index: index
+        });
     }
 
     const stakeTokens = async (index) => {
         toast.info("Staking in progress...");
         try {
-            let approve = await tokenContract.approve(stakeAddress, stakeValue);
+            let approve = await tokenContract.approve(stakeAddress, stakeValue.value);
             await approve.wait();
-            let stake = await stakeContract.stakeTokens(index, stakeValue);
+            let stake = await stakeContract.stakeTokens(index, stakeValue.value);
             await stake.wait();
             toast.success("BKB staked successfully");
             /*console.log("Staked successfully", stake);*/
@@ -92,6 +98,15 @@ export default function SortSection() {
             toast.error(err.message);
             alert(err.message)
         }
+    }
+
+    function setMaxStakeValue(index){
+        const tokenBal = document.getElementById('tokenBal').textContent;
+        document.getElementById(`stakeValue${index}`).value = tokenBal;
+        setStakeValue({
+            value: tokenBal,
+            index: index
+        })
     }
 
     if (poolDataArray.length === 0) {
@@ -142,7 +157,7 @@ export default function SortSection() {
                                                                 className="title no-info"
                                                                 onclick="return false;"
                                                             >
-                                                                BKB Staking 7 days
+                                                                BKB Staking {item[7].toNumber()} days
                                                                 <small />
                                                             </a>
                                                             <div className="date">Stake Now - Active</div>
@@ -193,24 +208,25 @@ export default function SortSection() {
                                                         <div className="Blockombat-form">
                                                             <div className="title">Your BKB Balance</div>
                                                             <div className="total">
-                                                                <BKBbalance signer={signer} />
+                                                                <BKBbalance signer={signer} /> DKTN
                                                             </div>
                                                             <div className="inputs">
                                                                 <div className="input-group">
                                                                     <input
                                                                         className="input"
                                                                         type="number"
-                                                                        min={0}
-                                                                        value={stakeValue}
-                                                                        step="0.1"
-                                                                        onChange={handleInputChange}
+                                                                        min={0}                                                                  
+                                                                        step="1"      
+                                                                        value = { index === stakeValue.index ? stakeValue.value : 0 }                                                            
+                                                                        id={`stakeValue${index}`}
+                                                                        onChange={(e)=>handleInputChange(e, index)}
                                                                     />
                                                                     <span
                                                                         className="text"
                                                                         style={{ cursor: "pointer" }}
-                                                                        onClick={() => setStakeValue(100)}
+                                                                        onClick={() => setMaxStakeValue(index)}
                                                                     >
-                                                                        100 MAX
+                                                                        MAX
                                                                     </span>
                                                                 </div>
                                                                 <button

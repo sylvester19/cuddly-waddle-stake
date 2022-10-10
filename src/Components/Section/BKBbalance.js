@@ -18,11 +18,12 @@ export default function BKBbalance(props) {
         const tokenContract = new ethers.Contract(tokenAddress, tokenABI, props.signer);
         const balance = await tokenContract.balanceOf(props.signer.getAddress())
         let rawdata = ethers.utils.formatEther(balance.toString());
-        setClaimedreward(rawdata)
+        let data = Math.round(rawdata);
+        setClaimedreward(data);
     }
 
     return (
-        <span className="st_heading">{claimedreward} DTKN</span>
+        <span id="tokenBal" className="st_heading">{claimedreward}</span>
     );
 
 }

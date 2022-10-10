@@ -713,10 +713,11 @@ header .inputgrp .inputitem .input {
 }
 
 .accordian_section .total {
-    font-weight: bold;
-    font-size: 21px;
     line-height: 21px;
     margin-bottom: 10px;
+    color: #08adb2;
+    font-size: 15px;
+    font-weight: bold;
 }
 
 .accordian_section .Blockombat-form {
