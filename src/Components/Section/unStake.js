@@ -35,8 +35,8 @@ export default function Unstake(props) {
             let stake = await stakeContract.unstakeTokens(poolId);
             await stake.wait();
             toast.success("BKB unstaked successfully");
-        } catch (err) {
-            toast.error('Transaction failed');
+        } catch (stake) {
+            toast.error(stake.reason);
         }
     }
 

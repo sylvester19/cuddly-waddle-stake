@@ -20,7 +20,7 @@ export default function ClaimedReward(props) {
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props?.signer);
         let stake = await stakeContract?.claimableRewards(poolId,props.signer.getAddress());
         let data = stake.toString();
-        if(data != 0){
+        if(data == 0){
             document.getElementById('claimbtn').disabled = false;
         } else {
             document.getElementById('claimbtn').disabled = true;
@@ -34,9 +34,9 @@ export default function ClaimedReward(props) {
         try {
             let stake = await stakeContract.claimRewards(poolId);
             await stake.wait();
-            toast.success("Rewards successfully claimed");
-        } catch (err) {
-            toast.error('Transaction failed');
+            toast.success("Rewards claimed successfully");
+        } catch (stake) {
+            toast.error(stake.reason);
         }
     }
 
@@ -53,7 +53,6 @@ export default function ClaimedReward(props) {
             id="claimbtn"
             className="btn btn-default form-button"
             onClick={() => ClaimToken()}
-            disabled
             >
             Claim
             </button>
