@@ -53,16 +53,18 @@ export default function SortSection() {
 
     const stakeTokens = async (index) => {
         toast.info("Staking in progress...");
+        // to wei
+        const amount = ethers.utils.parseEther(stakeValue.value.toString(), 'ether');
+        
         try {
-            let approve = await tokenContract.approve(stakeAddress, stakeValue.value);
+            let approve = await tokenContract.approve(stakeAddress, amount);
             await approve.wait();
             let stake = await stakeContract.stakeTokens(index, stakeValue.value);
             await stake.wait();
             toast.success("BKB staked successfully");
             /*console.log("Staked successfully", stake);*/
         } catch (error) {
-            toast.error(error.message);
-            alert(error.message)
+            toast.error('transaction failed');
         }
     }
 
@@ -74,8 +76,7 @@ export default function SortSection() {
             toast.success("BKB unstaked successfully");
             /*console.log("unstaked successfully", stake);*/
         } catch (err) {
-            toast.error(err.message);
-            alert(err.message)
+            toast.error('transaction failed');
         }
     }
 
