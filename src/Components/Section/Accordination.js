@@ -28,6 +28,9 @@ export default function SortSection() {
 
     const [poolDataArray, setPoolData] = useState([]);
     const [maxstack, setMaxStack] = useState([]);
+    const [stakeBtn, setStakeBtn] = useState(true);
+
+
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
@@ -57,9 +60,9 @@ export default function SortSection() {
                 value: e.target.value,
                 index: index
             });
-            document.getElementById('stakebtn').disabled = false;
+            setStakeBtn(false);
         } else {
-            document.getElementById('stakebtn').disabled = true;
+            setStakeBtn(true)
         }
     }
 
@@ -104,6 +107,7 @@ export default function SortSection() {
             value: tokenBal,
             index: index
         })
+        setStakeBtn(false);
     }
 
     if (poolDataArray.length === 0) {
@@ -233,7 +237,7 @@ export default function SortSection() {
                                                                     id="stakebtn"
                                                                     className="btn btn-default form-button"
                                                                     onClick={() => stakeTokens(index)}
-                                                                    disabled
+                                                                    disabled = {stakeBtn}
                                                                 >
                                                                     STAKE
                                                                 </button>
