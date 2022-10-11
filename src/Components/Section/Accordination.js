@@ -64,9 +64,10 @@ export default function SortSection() {
         setLoader(true)
         toast.info("Staking in progress...");
         try {
-            let approve = await tokenContract.approve(stakeAddress, stakeValue.value);
+            let amount = ethers.utils.parseEther(stakeValue.value.toString());
+            let approve = await tokenContract.approve(stakeAddress, amount);
             await approve.wait();
-            let stake = await stakeContract.stakeTokens(index, stakeValue.value);
+            let stake = await stakeContract.stakeTokens(index, amount);
             await stake.wait();
             toast.success("BKB staked successfully");
             setLoader(false)
