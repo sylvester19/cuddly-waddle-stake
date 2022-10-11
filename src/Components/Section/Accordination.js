@@ -5,10 +5,12 @@ import { tokenABI, tokenAddress } from "../../tokenabi";
 import { useSigner, useProvider } from 'wagmi'
 import { ethers } from 'ethers';
 import ClaimedReward from './ClaimedReward'
+import EarnedBkb from './earnedBkb'
 import StakedBKB from './StakedBKB'
 import BKBbalance from './BKBbalance'
 import APR from './APR'
 import { ToastContainer, toast } from 'react-toastify';
+import Unstake from "./unStake";
 
 
 export default function SortSection() {
@@ -19,6 +21,11 @@ export default function SortSection() {
         value: 0,
         index: 0
     });
+    const [unstakeValue, setUnstakeValue] = useState({
+        value: 0,
+        index: 0
+    });
+
     const [poolDataArray, setPoolData] = useState([]);
     const [maxstack, setMaxStack] = useState([]);
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
@@ -45,10 +52,27 @@ export default function SortSection() {
     }
 
     const handleInputChange = (e,index) => {
-        setStakeValue({
-            value: e.target.value,
-            index: index
-        });
+        if(e.target.value != 0){
+            setStakeValue({
+                value: e.target.value,
+                index: index
+            });
+            document.getElementById('stakebtn').disabled = false;
+        } else {
+            document.getElementById('stakebtn').disabled = true;
+        }
+    }
+
+    const handleUnstakeValue = (e,index) => {
+        if(e.target.value != 0){
+            setUnstakeValue({
+                value: e.target.value,
+                index: index
+            });
+            document.getElementById('unstakebtn').disabled = false;
+        } else {
+            document.getElementById('unstakebtn').disabled = true;
+        }
     }
 
     const stakeTokens = async (index) => {
@@ -65,35 +89,12 @@ export default function SortSection() {
         }
     }
 
-    async function unstakeTokens(index) {
-        toast.info("Unstaking in progress...");
-        try {
-            let stake = await stakeContract.unstakeTokens(index);
-            await stake.wait();
-            toast.success("BKB unstaked successfully");
-        } catch (err) {
-            toast.error('Transaction failed');
-        }
-    }
-
     async function unstakeTokensMAX(index) {
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
         let stake = await stakeContract.userInfo(index, signer.getAddress());
         let data = stake.amount.toString();
         setMaxStack(data)
         return false;
-    }
-
-    async function ClaimToken(index) {
-        toast.info("Claiming in progress...");
-        try {
-            let stake = await stakeContract.claimRewards(index);
-            await stake.wait();
-            toast.success("Rewards successfully claimed");
-    
-        } catch (err) {
-            toast.error('Transaction failed');
-        }
     }
 
     function setMaxStakeValue(index){
@@ -120,7 +121,8 @@ export default function SortSection() {
                         <div className="accordion" id="accordionPanelsStayOpenExample">
                             {poolDataArray?.map((item, index) => {
                                 if(item[9] === true){
-                                return (
+                                    
+                                    return (
                                     <div className="accordion-item" key={index} >
                                         <h2
                                             className="accordion-header"
@@ -168,7 +170,7 @@ export default function SortSection() {
                                                             <span className="st_info">Staked BKB</span>
                                                         </div>
                                                         <div className="col-md-3">
-                                                            <ClaimedReward pool={index} signer={signer} />
+                                                            <EarnedBkb pool={index} signer={signer} />
                                                             <span className="st_info">Earned BKB</span>
                                                         </div>
                                                         <div className="col-md-3">
@@ -205,7 +207,7 @@ export default function SortSection() {
                                                         <div className="Blockombat-form">
                                                             <div className="title">Your BKB Balance</div>
                                                             <div className="total">
-                                                                <BKBbalance signer={signer} /> DKTN
+                                                                <BKBbalance signer={signer} />
                                                             </div>
                                                             <div className="inputs">
                                                                 <div className="input-group">
@@ -228,8 +230,10 @@ export default function SortSection() {
                                                                 </div>
                                                                 <button
                                                                     type="button"
+                                                                    id="stakebtn"
                                                                     className="btn btn-default form-button"
                                                                     onClick={() => stakeTokens(index)}
+                                                                    disabled
                                                                 >
                                                                     STAKE
                                                                 </button>
@@ -238,52 +242,16 @@ export default function SortSection() {
                                                         </div>
                                                     </div>
                                                     <div className="col-md-4">
-                                                        <div className="Blockombat-form">
-                                                            <div className="title">Staked BKB Balance</div>
-                                                            <div className="total">
-                                                                <StakedBKB pool={index} signer={signer} />
-                                                            </div>
-                                                            <div className="inputs">
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        className="input"
-                                                                        type="text"
-                                                                        value={maxstack}
-                                                                    />
-                                                                    <span
-                                                                        className="text"
-                                                                        style={{ cursor: "pointer" }}
-                                                                        onClick={() => unstakeTokensMAX(index)}
-                                                                    >
-                                                                        MAX
-                                                                    </span>
-                                                                </div>
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn btn-default form-button"
-                                                                    onClick={() => unstakeTokens(index)}
-                                                                >
-                                                                    Unstake
-                                                                </button>
-                                                            </div>
+                                                        <div style={{textAlign:'center'}} className="Blockombat-form">
+                                                            <div style={{textAlign:'center'}} className="title">Staked BKB Balance</div>
+                                                            <Unstake pool={index} signer={signer} />
                                                             <span className="verticalbar" />
                                                         </div>
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="Blockombat-form">
                                                             <div className="title">BKB Earned</div>
-                                                            <div className="total">
-                                                                <ClaimedReward pool={index} signer={signer} />
-                                                            </div>
-                                                            <div className="inputs">
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn btn-default form-button"
-                                                                    onClick={() => ClaimToken(index)}
-                                                                >
-                                                                    Claim
-                                                                </button>
-                                                            </div>
+                                                            <ClaimedReward pool={index} signer={signer} />                                                      
                                                         </div>
                                                     </div>
                                                 </div>

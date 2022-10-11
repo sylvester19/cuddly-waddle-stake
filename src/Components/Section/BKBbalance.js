@@ -17,9 +17,7 @@ export default function BKBbalance(props) {
     async function fetchFeeData(props) {
         const tokenContract = new ethers.Contract(tokenAddress, tokenABI, props.signer);
         const balance = await tokenContract.balanceOf(props.signer.getAddress())
-        let rawdata = ethers.utils.formatEther(balance.toString());
-        let data = Math.round(rawdata);
-        setClaimedreward(data);
+        setClaimedreward(balance.toString());
     }
 
     return (

@@ -8,7 +8,7 @@ import { Poolinfo } from './Poolinfo'
 
 export default function StakedBKB(props) {
 
-    const [claimedreward, setClaimedreward] = useState([]);
+    const [stakedBalance, setStakedBalance] = useState([]);
 
     useEffect(() => {
         fetchFeeData(props)
@@ -18,11 +18,11 @@ export default function StakedBKB(props) {
     async function fetchFeeData(props) {
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props.signer);
         let stake = await stakeContract.userInfo(props.pool, props.signer.getAddress());
-        setClaimedreward(stake.amount.toString())
+        setStakedBalance(stake.amount.toString())
     }
 
     return (
-        <span className="st_heading">{claimedreward}</span>
+        <span className="st_heading">{stakedBalance}</span>
     );
 
 }
