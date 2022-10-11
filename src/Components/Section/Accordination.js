@@ -8,6 +8,7 @@ import ClaimedReward from './ClaimedReward'
 import StakedBKB from './StakedBKB'
 import BKBbalance from './BKBbalance'
 import APR from './APR'
+import PropagateLoader from "react-spinners/PropagateLoader";
 import { ToastContainer, toast } from 'react-toastify';
 
 
@@ -20,6 +21,7 @@ export default function SortSection() {
         index: 0
     });
     const [poolDataArray, setPoolData] = useState([]);
+    const [loading, setLoader] = useState(false);
     const [maxstack, setMaxStack] = useState([]);
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
@@ -32,6 +34,13 @@ export default function SortSection() {
         getPools();
     }, 1000)
 
+    console.log("Singer=>", signer)
+
+    if (signer === null) {
+        return (<div style={{ paddingTop: '50px' }}>
+            <center>Please Connect your wallet to continue</center>
+        </div>)
+    }
 
     const getPools = async () => {
         const noofPools = await stakeContract.poolLength()
@@ -44,7 +53,7 @@ export default function SortSection() {
         setPoolData(poolData);
     }
 
-    const handleInputChange = (e,index) => {
+    const handleInputChange = (e, index) => {
         setStakeValue({
             value: e.target.value,
             index: index
@@ -52,6 +61,7 @@ export default function SortSection() {
     }
 
     const stakeTokens = async (index) => {
+        setLoader(true)
         toast.info("Staking in progress...");
         // to wei
         const amount = ethers.utils.parseEther(stakeValue.value.toString(), 'ether');
@@ -59,9 +69,10 @@ export default function SortSection() {
         try {
             let approve = await tokenContract.approve(stakeAddress, amount);
             await approve.wait();
-            let stake = await stakeContract.stakeTokens(index, stakeValue.value);
+            let stake = await stakeContract.stakeTokens(index, amount);
             await stake.wait();
             toast.success("BKB staked successfully");
+            setLoader(false)
             /*console.log("Staked successfully", stake);*/
         } catch (error) {
             toast.error('transaction failed');
@@ -69,11 +80,13 @@ export default function SortSection() {
     }
 
     async function unstakeTokens(index) {
+        setLoader(true)
         toast.info("Unstaking in progress...");
         try {
             let stake = await stakeContract.unstakeTokens(index);
             await stake.wait();
             toast.success("BKB unstaked successfully");
+            setLoader(false)
             /*console.log("unstaked successfully", stake);*/
         } catch (err) {
             toast.error('transaction failed');
@@ -81,27 +94,32 @@ export default function SortSection() {
     }
 
     async function unstakeTokensMAX(index) {
+        setLoader(true)
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
         let stake = await stakeContract.userInfo(index, signer.getAddress());
         let data = stake.amount.toString();
         setMaxStack(data)
+        setLoader(false)
         return false;
     }
 
     async function ClaimToken(index) {
+        setLoader(true)
         toast.info("Claiming in progress...");
         try {
             let stake = await stakeContract.claimRewards(index);
             await stake.wait();
             toast.success("Rewards successfully claimed");
+            setLoader(false)
             /*console.log("Clain", stake);*/
         } catch (err) {
+            setLoader(false)
             toast.error(err.message);
             alert(err.message)
         }
     }
 
-    function setMaxStakeValue(index){
+    function setMaxStakeValue(index) {
         const tokenBal = document.getElementById('tokenBal').textContent;
         document.getElementById(`stakeValue${index}`).value = tokenBal;
         setStakeValue({
@@ -111,8 +129,10 @@ export default function SortSection() {
     }
 
     if (poolDataArray.length === 0) {
-        return (<div style={{ paddingTop: '50px' }}><center>Please Connect your wallet to continue..</center></div>)
+        return (<div style={{ paddingTop: '50px' }}><center><PropagateLoader color="#267d79" size={40} /></center></div>)
     }
+
+
 
     return (
         <>
@@ -216,11 +236,11 @@ export default function SortSection() {
                                                                     <input
                                                                         className="input"
                                                                         type="number"
-                                                                        min={0}                                                                  
-                                                                        step="1"      
-                                                                        value = { index === stakeValue.index ? stakeValue.value : 0 }                                                            
+                                                                        min={0}
+                                                                        step="1"
+                                                                        value={index === stakeValue.index ? stakeValue.value : 0}
                                                                         id={`stakeValue${index}`}
-                                                                        onChange={(e)=>handleInputChange(e, index)}
+                                                                        onChange={(e) => handleInputChange(e, index)}
                                                                     />
                                                                     <span
                                                                         className="text"
@@ -298,6 +318,16 @@ export default function SortSection() {
                             })
                             }
                         </div>
+                        {
+                            loading && (
+                                <div className='checkout'>
+                                    <div className='maincheckout'>
+                                        <div style={{ height: '50px' }}> <center><PropagateLoader color="#267d79" size={40} /></center></div>
+                                    </div>
+                                </div>
+                            )
+                        }
+
                     </div>
                 </div>
             </section>
