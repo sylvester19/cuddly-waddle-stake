@@ -119,8 +119,9 @@ export default function SortSection() {
                     <div className="col-md-12">
                         <div className="accordion" id="accordionPanelsStayOpenExample">
                             {poolDataArray?.map((item, index) => {
+                                if(item[9] === true){
                                 return (
-                                    <div className="accordion-item">
+                                    <div className="accordion-item" key={index} >
                                         <h2
                                             className="accordion-header"
                                             id={index === 0 ? "panelsStayOpen-headingOne" : `panelsStayOpen-heading${index + 1}`}
@@ -289,7 +290,7 @@ export default function SortSection() {
                                             </div>
                                         </div>
                                     </div>
-                                )
+                                )}
                             })
                             }
                         </div>
