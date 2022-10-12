@@ -11,7 +11,12 @@ export default function SortSection() {
                             <div className="griditem">
                                 <span className="its_title">sort by</span>
                                 <div className="dropdown">
-                                    <a
+                                    <select className="input-search" style={{ width: '250px' }}>
+                                        <option>Default</option>
+                                        <option>APR</option>
+                                        <option>Liquidity</option>
+                                    </select>
+                                    {/* <a
                                         className="btn dropdown-toggle ssdropdown"
                                         href="#"
                                         role="button"
@@ -40,7 +45,7 @@ export default function SortSection() {
                                                 Liquidity
                                             </a>
                                         </li>
-                                    </ul>
+                                    </ul> */}
                                 </div>
                             </div>
                             <div className="griditem">
@@ -57,7 +62,6 @@ export default function SortSection() {
                                         defaultValue=""
                                         id="Staked"
                                         disabled=""
-                                        checked="true"
                                     />
                                     <label
                                         className="form-check-label its_title"
