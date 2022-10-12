@@ -19,10 +19,10 @@ export default function Unstake(props) {
     async function fetchFeeData(props) {
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props.signer);
         let stake = await stakeContract.userInfo(props.pool, props.signer.getAddress());
-        if (stake.amount.toString() != 0) {
-            document.getElementById('unstakebtn').disabled = false;
+        if (stake.amount.toString() !== '0') {
+            document.getElementById(`unstakebtn${poolId}`).disabled = false;
         } else {
-            document.getElementById('unstakebtn').disabled = true;
+            document.getElementById(`unstakebtn${poolId}`).disabled = true;
         }
 
         setStakedBalance(stake.amount.toString())
@@ -66,7 +66,7 @@ export default function Unstake(props) {
                 <button
                     style={{ margin: '0 auto' }}
                     type="button"
-                    id="unstakebtn"
+                    id={`unstakebtn${poolId}`}
                     className="btn btn-default form-button"
                     onClick={() => unstakeTokens()}
                 >
