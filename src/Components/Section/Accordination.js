@@ -28,7 +28,10 @@ export default function SortSection(props) {
 
     const poolDataArray = props.data;
     const [maxstack, setMaxStack] = useState([]);
-    const [stakeBtn, setStakeBtn] = useState(true);
+    const [stakeBtn, setStakeBtn] = useState({
+        active : false,
+        index : 0
+    });
 
 
 
@@ -44,9 +47,15 @@ export default function SortSection(props) {
                 value: e.target.value,
                 index: index
             });
-            setStakeBtn(false);
+            setStakeBtn({
+                active : false,
+                index : index
+            });
         } else {
-            setStakeBtn(true)
+            setStakeBtn({
+                active : true,
+                index : index
+            })
         }
     }
 
@@ -96,7 +105,10 @@ export default function SortSection(props) {
             value: tokenBal,
             index: index
         })
-        setStakeBtn(false);
+        setStakeBtn({
+            active : false,
+            index : index
+        });
     }
 
     if (poolDataArray.length === 0) {
@@ -226,7 +238,7 @@ export default function SortSection(props) {
                                                                         id="stakebtn"
                                                                         className="btn btn-default form-button"
                                                                         onClick={() => stakeTokens(index)}
-                                                                        disabled={stakeBtn}
+                                                                        disabled={stakeBtn.index === index ? stakeBtn.active : true}
                                                                     >
                                                                         STAKE
                                                                     </button>
