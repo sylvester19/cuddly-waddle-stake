@@ -45,6 +45,7 @@ export default function SortSection() {
     }
 
     const CheckFilter = async () => {
+        getPools();
         // const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props.signer);
         // let stake = await stakeContract.userInfo(props.pool, props.signer.getAddress());
 
@@ -54,15 +55,17 @@ export default function SortSection() {
 
 
     const TVLData = async () => {
-        let pool = 0;
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
-        let stake = await stakeContract.userInfo(pool, signer.getAddress());
-        let dataone = stake.amount.toString();
-        let pools = 1;
+        const noofPools = await stakeContract.poolInfo(1)
         const stakeContracts = new ethers.Contract(stakeAddress, stakingabi, signer);
-        let stakes = await stakeContracts.userInfo(pools, signer.getAddress());
-        let datatwo = stakes.amount.toString();
-        let result = dataone + datatwo;
+        const noofPool = await stakeContracts.poolInfo(0)
+        let dataone = noofPools.currentPoolSize.toNumber();
+        let datateo = noofPool.currentPoolSize.toNumber()
+
+        let result = parseInt(dataone) + parseInt(datateo);
+
+        console.log("TVL=>", result)
+
         setTVLData(result)
     }
 
