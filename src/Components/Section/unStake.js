@@ -16,7 +16,6 @@ export default function Unstake(props) {
         Poolinfo(props)
     }, [])
 
-
     async function fetchFeeData(props) {
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props.signer);
         let stake = await stakeContract.userInfo(props.pool, props.signer.getAddress());

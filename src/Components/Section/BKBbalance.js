@@ -3,6 +3,9 @@ import { ethers } from 'ethers';
 import { tokenABI, tokenAddress } from "../../tokenabi";
 
 
+
+
+
 export default function BKBbalance(props) {
 
     const [claimedreward, setClaimedreward] = useState([]);

@@ -3,6 +3,20 @@ import '../assets/styles.css'
 import Logo from '../assets/Images/blockombat-logo.png';
 
 export default function Sidebox() {
+    const [data, Setdata] = React.useState(true);
+
+    React.useEffect(() => {
+        fetch(`https://cors-digi.herokuapp.com/` + `https://api.pancakeswap.info/api/v2/tokens/0xdB0c5577728520e5D979dFAAA89ab78d316Be66C`)
+            .then(resp => resp.json())
+            .then(function (data) {
+                Setdata(data.data.price)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }, []);
+
+
     return (
         <>
             <div className="leftbox">
@@ -31,7 +45,7 @@ export default function Sidebox() {
                                 $BKB
                             </a>
                             <a href="" className="input">
-                                $<span>0.005</span>
+                                $<span>{data}</span>
                             </a>
                         </div>
                     </div>

@@ -11,12 +11,21 @@ export default function SortSection() {
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
     useEffect(() => {
-        getPools();
+        SearchFilter()
     }, [])
 
     setTimeout(() => {
-        getPools();
+        SearchFilter()
     }, 1000)
+
+    const SearchFilter = async (event) => {
+        if (!event) {
+            getPools();
+        } else {
+            setPoolData(poolDataArray[0]);
+        }
+    }
+
 
 
     const getPools = async () => {
@@ -34,8 +43,17 @@ export default function SortSection() {
         let pool = 0;
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
         let stake = await stakeContract.userInfo(pool, signer.getAddress());
-        setTVLData(stake.amount.toString())
+        let dataone = stake.amount.toString();
+        let pools = 1;
+        const stakeContracts = new ethers.Contract(stakeAddress, stakingabi, signer);
+        let stakes = await stakeContracts.userInfo(pools, signer.getAddress());
+        let datatwo = stakes.amount.toString();
+        let result = dataone + datatwo;
+
+        setTVLData(result)
     }
+
+
 
     return (
         <>
@@ -57,7 +75,7 @@ export default function SortSection() {
                             <div className="griditem">
                                 <span className="its_title">search</span>
                                 <div className="input-search">
-                                    <input type="text" name="search" />
+                                    <input type="text" onChange={(event) => SearchFilter(event.target.value)} name="search" />
                                 </div>
                             </div>
                             <div className="griditem ">
