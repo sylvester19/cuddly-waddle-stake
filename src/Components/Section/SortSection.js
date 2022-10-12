@@ -11,33 +11,38 @@ export default function SortSection() {
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
     useEffect(() => {
-        SearchFilter()
+        getPools()
     }, [])
 
-    setTimeout(() => {
-        SearchFilter()
-    }, 1000)
+
+    const getPools = async () => {
+        const noofPools = await stakeContract.poolLength()
+        const totalPools = noofPools.toNumber();
+        const poolData = ([]);
+        for (let i = 0; i < totalPools; i++) {
+            const pool = await stakeContract.poolInfo(i);
+            poolData.push(pool);
+        }
+        setPoolData(poolData);
+        TVLData()
+    }
 
     const SearchFilter = async (event) => {
         if (!event) {
             getPools();
         } else {
-            setPoolData(poolDataArray[0]);
+            for (let i = 0; i <= poolDataArray.length; i++) {
+                let data = poolDataArray[i][7].toNumber();
+                if (`${data}` === event) {
+                    setPoolData([poolDataArray[i]]);
+                }
+            }
         }
     }
 
 
 
-    const getPools = async () => {
-        const noofPools = await stakeContract.poolLength()
-        const totalPools = noofPools?.toNumber();
-        const poolData = [];
-        for (let i = 0; i < totalPools; i++) {
-            const pool = await stakeContract?.poolInfo(i);
-            poolData.push(pool);
-        }
-        setPoolData(poolData); TVLData()
-    }
+
 
     const TVLData = async () => {
         let pool = 0;
@@ -49,7 +54,6 @@ export default function SortSection() {
         let stakes = await stakeContracts.userInfo(pools, signer.getAddress());
         let datatwo = stakes.amount.toString();
         let result = dataone + datatwo;
-
         setTVLData(result)
     }
 
@@ -73,7 +77,7 @@ export default function SortSection() {
                                 </div>
                             </div>
                             <div className="griditem">
-                                <span className="its_title">search</span>
+                                <span className="its_title">Enter lock period</span>
                                 <div className="input-search">
                                     <input type="text" onChange={(event) => SearchFilter(event.target.value)} name="search" />
                                 </div>
@@ -85,7 +89,7 @@ export default function SortSection() {
                                         type="checkbox"
                                         defaultValue=""
                                         id="Staked"
-                                        disabled=""
+                                        onChange={() => SearchFilter(7)}
                                     />
                                     <label
                                         className="form-check-label its_title"
