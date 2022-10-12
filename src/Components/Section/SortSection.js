@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { ethers } from 'ethers';
+import { stakingabi, stakeAddress } from "../../stakingabi";
+import { useSigner } from 'wagmi'
+
 
 export default function SortSection() {
+    const { data: signer } = useSigner()
+    const [tvldata, setTVLData] = useState(true);
+
+    useEffect(() => {
+        TVLData();
+    }, [])
+
+
+    const TVLData = async () => {
+        let pool = 1;
+        const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
+        let stake = await stakeContract.userInfo(pool, signer.getAddress());
+        setTVLData(stake.toString())
+    }
+
+
     return (
         <>
 
@@ -16,36 +36,6 @@ export default function SortSection() {
                                         <option>APR</option>
                                         <option>Liquidity</option>
                                     </select>
-                                    {/* <a
-                                        className="btn dropdown-toggle ssdropdown"
-                                        href="#"
-                                        role="button"
-                                        id="dropdownMenuLink"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                    >
-                                        Default &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    </a>
-                                    <ul
-                                        className="dropdown-menu"
-                                        aria-labelledby="dropdownMenuLink"
-                                    >
-                                        <li>
-                                            <a className="dropdown-item" href="#">
-                                                Default
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a className="dropdown-item" href="#">
-                                                APR
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a className="dropdown-item" href="#">
-                                                Liquidity
-                                            </a>
-                                        </li>
-                                    </ul> */}
                                 </div>
                             </div>
                             <div className="griditem">
@@ -70,20 +60,6 @@ export default function SortSection() {
                                         Staked only
                                     </label>
                                 </div>
-                                {/* <div className="form-check mt-md-4">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        defaultValue=""
-                                        id="Show"
-                                    />
-                                    <label
-                                        className="form-check-label its_title"
-                                        htmlFor="Show"
-                                    >
-                                        Show ended
-                                    </label>
-                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -91,7 +67,7 @@ export default function SortSection() {
                         <div className="info-tvl d-flex justify-content-between">
                             <div className="label">TVL:</div>
                             <div className="total">
-                                $<span>0.00</span>
+                                $<span>{tvldata}</span>
                             </div>
                         </div>
                     </div>
