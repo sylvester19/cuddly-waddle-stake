@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
 import './Popup.css';
-
 import "@rainbow-me/rainbowkit/styles.css";
 import {
     ConnectButton
 } from "@rainbow-me/rainbowkit";
-
+import { toast } from 'react-toastify';
 
 export default function Mainsection() {
 
-    const [openpopup, setOpenpopup] = useState(false);
+    const [chain,,setChain] = useState('BSC')
 
+    function handleChain(name){
+        if(name === 'BSC'){
+            setChain('BSC')
+        } else if (name === 'SOL'){
+            toast.info('Coming Soon')
+        } else if (name === 'OKC'){
+            toast.info('Coming Soon')
+        }
+    }
 
     return (
 
@@ -30,24 +38,24 @@ export default function Mainsection() {
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
-                                    BSC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {chain} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </a>
                                 <ul
                                     className="dropdown-menu"
                                     aria-labelledby="dropdownMenuLink"
                                 >
                                     <li>
-                                        <a className="dropdown-item" href="#">
+                                        <a onClick={()=>handleChain('BSC')} className="dropdown-item" href="#">
                                             BSC
                                         </a>
                                     </li>
                                     <li>
-                                        <a className="dropdown-item" href="#">
+                                        <a onClick={()=>handleChain('SOL')} className="dropdown-item" href="#">
                                             SOLANA
                                         </a>
                                     </li>
                                     <li>
-                                        <a className="dropdown-item" href="#">
+                                        <a onClick={()=>handleChain('OKC')} className="dropdown-item" href="#">
                                             OKC
                                         </a>
                                     </li>

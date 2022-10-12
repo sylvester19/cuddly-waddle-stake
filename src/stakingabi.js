@@ -1,4 +1,4 @@
-export const stakeAddress = '0x2f3BaC73417e95Ab27B526B33458bc5921A50019';
+export const stakeAddress = '0xB70Bb95c96DEB16A206c15b05f7A386c335CE31F';
 
 export const stakingabi = [
 	{

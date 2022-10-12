@@ -87,6 +87,10 @@ export default function SortSection() {
             let stake = await stakeContract.stakeTokens(index, stakeValue.value);
             await stake.wait();
             toast.success("BKB staked successfully");
+            setStakeValue({
+                value: 0,
+                index: 0
+            });
         } catch (stake) {
             toast.error(stake.reason);
         }
