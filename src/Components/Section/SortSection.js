@@ -14,6 +14,10 @@ export default function SortSection() {
         getPools()
     }, [])
 
+    setTimeout(() => {
+        getPools()
+    }, 1000)
+
 
     const getPools = async () => {
         const noofPools = await stakeContract.poolLength()
