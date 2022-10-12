@@ -23,7 +23,7 @@ export default function EarnedBkb(props) {
 
 
     return (
-            <span className="st_heading">{earnedReward}</span>
+            <span className="st_heading">{earnedReward === 0 ? '0' : earnedReward}</span>
     );
 
 }

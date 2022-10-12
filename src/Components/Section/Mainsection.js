@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 export default function Mainsection() {
 
-    const [chain,,setChain] = useState('BSC')
+    const [chain,setChain] = useState('BSC')
 
     function handleChain(name){
         if(name === 'BSC'){
