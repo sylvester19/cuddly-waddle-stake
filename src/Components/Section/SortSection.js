@@ -14,9 +14,9 @@ export default function SortSection() {
         getPools()
     }, [])
 
-    setTimeout(() => {
-        getPools()
-    }, 1000)
+    // setTimeout(() => {
+    //     getPools()
+    // }, 1000)
 
 
     const getPools = async () => {
@@ -44,7 +44,12 @@ export default function SortSection() {
         }
     }
 
+    const CheckFilter = async () => {
+        // const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props.signer);
+        // let stake = await stakeContract.userInfo(props.pool, props.signer.getAddress());
 
+        // console.log("data=>", stake)
+    }
 
 
 
@@ -93,7 +98,7 @@ export default function SortSection() {
                                         type="checkbox"
                                         defaultValue=""
                                         id="Staked"
-                                        onChange={() => SearchFilter(7)}
+                                        onClick={() => CheckFilter()}
                                     />
                                     <label
                                         className="form-check-label its_title"
