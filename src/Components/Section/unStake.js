@@ -16,10 +16,11 @@ export default function Unstake(props) {
         Poolinfo(props)
     }, [])
 
+
     async function fetchFeeData(props) {
         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props.signer);
         let stake = await stakeContract.userInfo(props.pool, props.signer.getAddress());
-        if(stake.amount.toString() != 0){
+        if (stake.amount.toString() != 0) {
             document.getElementById('unstakebtn').disabled = false;
         } else {
             document.getElementById('unstakebtn').disabled = true;
@@ -42,11 +43,11 @@ export default function Unstake(props) {
 
     return (
         <>
-        <div className="total">
-            <span className="st_heading">{stakedBalance}</span>
-        </div>
-        <div className="inputs">
-            {/*<div className="input-group">
+            <div className="total">
+                <span className="st_heading">{stakedBalance}</span>
+            </div>
+            <div className="inputs">
+                {/*<div className="input-group">
             <input
              className="input"
              type="number"
@@ -63,16 +64,16 @@ export default function Unstake(props) {
                  MAX
                  </span>
                  </div>*/}
-                  <button
-                  style={{margin:'0 auto'}}
-                  type="button"
-                  id="unstakebtn"
-                  className="btn btn-default form-button"
-                  onClick={() => unstakeTokens()}
-                  >
-                     Unstake
+                <button
+                    style={{ margin: '0 auto' }}
+                    type="button"
+                    id="unstakebtn"
+                    className="btn btn-default form-button"
+                    onClick={() => unstakeTokens()}
+                >
+                    Unstake
                 </button>
-                </div>
+            </div>
         </>
     );
 

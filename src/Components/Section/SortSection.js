@@ -2,24 +2,40 @@ import React, { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import { stakingabi, stakeAddress } from "../../stakingabi";
 import { useSigner } from 'wagmi'
-
+import Accordination from '../Section/Accordination'
 
 export default function SortSection() {
     const { data: signer } = useSigner()
     const [tvldata, setTVLData] = useState(true);
+    const [poolDataArray, setPoolData] = useState([]);
+    const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
     useEffect(() => {
-        TVLData();
+        getPools();
     }, [])
 
+    setTimeout(() => {
+        getPools();
+    }, 1000)
 
-    const TVLData = async () => {
-        let pool = 1;
-        const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
-        let stake = await stakeContract.userInfo(pool, signer.getAddress());
-        setTVLData(stake.toString())
+
+    const getPools = async () => {
+        const noofPools = await stakeContract.poolLength()
+        const totalPools = noofPools?.toNumber();
+        const poolData = [];
+        for (let i = 0; i < totalPools; i++) {
+            const pool = await stakeContract?.poolInfo(i);
+            poolData.push(pool);
+        }
+        setPoolData(poolData); TVLData()
     }
 
+    const TVLData = async () => {
+        let pool = 0;
+        const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
+        let stake = await stakeContract.userInfo(pool, signer.getAddress());
+        setTVLData(stake.amount.toString())
+    }
 
     return (
         <>
@@ -73,6 +89,7 @@ export default function SortSection() {
                     </div>
                 </div>
             </section>
+            <Accordination data={poolDataArray} />
         </>
     );
 }

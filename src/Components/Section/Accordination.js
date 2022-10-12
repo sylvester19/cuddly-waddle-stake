@@ -13,7 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import Unstake from "./unStake";
 
 
-export default function SortSection() {
+export default function SortSection(props) {
 
     const { data: signer } = useSigner()
     const provider = useProvider();
@@ -26,7 +26,7 @@ export default function SortSection() {
         index: 0
     });
 
-    const [poolDataArray, setPoolData] = useState([]);
+    const poolDataArray = props.data;
     const [maxstack, setMaxStack] = useState([]);
     const [stakeBtn, setStakeBtn] = useState(true);
 
@@ -34,27 +34,6 @@ export default function SortSection() {
 
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
-
-    useEffect(() => {
-        getPools();
-    }, [])
-
-    setTimeout(() => {
-        getPools();
-    }, 1000)
-
-
-    const getPools = async () => {
-        const noofPools = await stakeContract.poolLength()
-        const totalPools = noofPools?.toNumber();
-        const poolData = [];
-        for (let i = 0; i < totalPools; i++) {
-            const pool = await stakeContract?.poolInfo(i);
-            poolData.push(pool);
-        }
-        setPoolData(poolData);
-    }
-
 
 
 
@@ -97,7 +76,6 @@ export default function SortSection() {
                 value: 0,
                 index: 0
             });
-            getPools();
         } catch (stake) {
             toast.error(stake.reason);
         }

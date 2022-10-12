@@ -19,7 +19,6 @@ export default function Rightbox() {
                     </div>
                 </section>
                 <SortSection />
-                <Accordination />
             </div>
         </>
     );
