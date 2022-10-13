@@ -56,15 +56,6 @@ export default function SortSection() {
             }
             
         }
-    
-
-    const filterData = (i,value,event) => {
-        const filtered = new Array();
-        if ( value === event) {
-            filtered.push(poolDataArray[i]);         
-        }
-        setFilteredData(filtered);
-    }
 
     const CheckFilter = async () => {
         getPools();
