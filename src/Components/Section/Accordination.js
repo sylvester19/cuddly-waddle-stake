@@ -29,8 +29,8 @@ export default function SortSection(props) {
     const poolDataArray = props.data;
     const [maxstack, setMaxStack] = useState([]);
     const [stakeBtn, setStakeBtn] = useState({
-        active : false,
-        index : 0
+        active: false,
+        index: 0
     });
 
 
@@ -48,28 +48,17 @@ export default function SortSection(props) {
                 index: index
             });
             setStakeBtn({
-                active : false,
-                index : index
+                active: false,
+                index: index
             });
         } else {
             setStakeBtn({
-                active : true,
-                index : index
+                active: true,
+                index: index
             })
         }
     }
 
-    const handleUnstakeValue = (e, index) => {
-        if (e.target.value != 0) {
-            setUnstakeValue({
-                value: e.target.value,
-                index: index
-            });
-            document.getElementById('unstakebtn').disabled = false;
-        } else {
-            document.getElementById('unstakebtn').disabled = true;
-        }
-    }
 
     const stakeTokens = async (index) => {
         toast.info("Staking in progress...");
@@ -85,18 +74,15 @@ export default function SortSection(props) {
                 value: 0,
                 index: 0
             });
+
+            window.location.reload();
+
         } catch (stake) {
             toast.error(stake.reason);
         }
     }
 
-    async function unstakeTokensMAX(index) {
-        const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
-        let stake = await stakeContract.userInfo(index, signer.getAddress());
-        let data = stake.amount.toString();
-        setMaxStack(data)
-        return false;
-    }
+
 
     function setMaxStakeValue(index) {
         const tokenBal = document.getElementById('tokenBal').textContent;
@@ -106,8 +92,8 @@ export default function SortSection(props) {
             index: index
         })
         setStakeBtn({
-            active : false,
-            index : index
+            active: false,
+            index: index
         });
     }
 
@@ -180,7 +166,7 @@ export default function SortSection(props) {
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <span className="st_heading">
-                                                                    <APR pool={index} />
+                                                                    <APR pool={index} signer={signer} />
                                                                     <sup>
                                                                         <img
                                                                             src="images/info.svg"
