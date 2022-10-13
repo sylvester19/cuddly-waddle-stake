@@ -10,7 +10,7 @@ export default function SortSection() {
     const [counter, setCounter] = useState(0);
     const [poolDataArray, setPoolData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
-
+    const [checkfilter, setCheckFilter] = useState([]);
 
 
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
@@ -19,9 +19,9 @@ export default function SortSection() {
         getPools()
     }, [])
 
-   setTimeout(() => {
+    setTimeout(() => {
         getPools()
-     }, 1000)
+    }, 1000)
 
 
     const getPools = async () => {
@@ -34,13 +34,13 @@ export default function SortSection() {
         }
         setPoolData(poolData);
         TVLData()
-        if(counter === 0){
+        if (counter === 0) {
             setFilteredData(poolData)
             setCounter(1)
         } else {
             return
         }
-       
+
     }
 
     const SearchFilter = async (event) => {
@@ -52,43 +52,38 @@ export default function SortSection() {
                     return item[7].toString().includes(event)
                 })
                 setFilteredData(filterData);
-                }
             }
-            
         }
-    
 
-    const filterData = (i,value,event) => {
-        const filtered = new Array();
-        if ( value === event) {
-            filtered.push(poolDataArray[i]);         
-        }
-        setFilteredData(filtered);
     }
+
 
     const CheckFilter = async () => {
-        getPools();
-        // const stakeContract = new ethers.Contract(stakeAddress, stakingabi, props.signer);
-        // let stake = await stakeContract.userInfo(props.pool, props.signer.getAddress());
+        for (let i = 0; i <= poolDataArray.length; i++) {
+            const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
+            let stake = await stakeContract.userInfo([i], signer.getAddress());
+            let stakedata = stake.amount.toString()
+            if (stakedata != 0) {
+                let arraycount = stakedata[i]; console.log("Arr Count==>", arraycount)
+                setFilteredData([filteredData[arraycount]]);
+            }
 
-        // console.log("data=>", stake)
+
+        }
     }
-
 
 
     const TVLData = async () => {
-        const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
-        const noofPools = await stakeContract.poolInfo(1)
-        const stakeContracts = new ethers.Contract(stakeAddress, stakingabi, signer);
-        const noofPool = await stakeContracts.poolInfo(0)
-        let dataone = noofPools.currentPoolSize.toNumber();
-        let datateo = noofPool.currentPoolSize.toNumber()
-
-        let result = parseInt(dataone) + parseInt(datateo);
-
-        //console.log("TVL=>", result)
-
-        setTVLData(result)
+        const poolSize = [];
+        for (let i = 0; i <= poolDataArray.length; i++) {
+            let poolsize = poolDataArray[i]?.currentPoolSize;
+            if (poolsize != undefined) {
+                poolSize.push(poolsize.toNumber());
+            }
+        }
+        const sum = poolSize.reduce((partialSum, a) => partialSum + a, 0);
+        setTVLData(sum)
+        return false;
     }
 
 
