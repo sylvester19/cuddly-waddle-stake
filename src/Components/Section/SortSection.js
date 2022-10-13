@@ -57,21 +57,6 @@ export default function SortSection() {
     }
 
 
-    // const CheckFilter = async () => {
-    //     console.log(checkfilter)
-    //     for (let i = 0; i <= poolDataArray.length; i++) {
-    //         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
-    //         let stake = await stakeContract.userInfo([i], signer.getAddress());
-    //         let stakedata = stake.amount.toString()
-    //         if (stakedata != 0) {
-    //             let arraycount = stakedata[i];
-    //             setFilteredData([filteredData[arraycount]]);
-    //         }
-
-
-    //     }
-    // }
-
 
     const TVLData = async () => {
         const poolSize = [];
