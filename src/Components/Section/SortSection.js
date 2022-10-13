@@ -10,7 +10,6 @@ export default function SortSection() {
     const [counter, setCounter] = useState(0);
     const [poolDataArray, setPoolData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
-    const [checkfilter, setCheckFilter] = useState([]);
 
 
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
@@ -58,19 +57,20 @@ export default function SortSection() {
     }
 
 
-    const CheckFilter = async () => {
-        for (let i = 0; i <= poolDataArray.length; i++) {
-            const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
-            let stake = await stakeContract.userInfo([i], signer.getAddress());
-            let stakedata = stake.amount.toString()
-            if (stakedata != 0) {
-                let arraycount = stakedata[i]; console.log("Arr Count==>", arraycount)
-                setFilteredData([filteredData[arraycount]]);
-            }
+    // const CheckFilter = async () => {
+    //     console.log(checkfilter)
+    //     for (let i = 0; i <= poolDataArray.length; i++) {
+    //         const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
+    //         let stake = await stakeContract.userInfo([i], signer.getAddress());
+    //         let stakedata = stake.amount.toString()
+    //         if (stakedata != 0) {
+    //             let arraycount = stakedata[i];
+    //             setFilteredData([filteredData[arraycount]]);
+    //         }
 
 
-        }
-    }
+    //     }
+    // }
 
 
     const TVLData = async () => {
@@ -86,7 +86,24 @@ export default function SortSection() {
         return false;
     }
 
+    const handleChange = async event => {
+        if (event.target.checked) {
+            console.log('✅ Checkbox is checked');
+            for (let i = 0; i <= poolDataArray.length; i++) {
+                const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
+                let stake = await stakeContract.userInfo([i], signer.getAddress());
+                let stakedata = stake.amount.toString()
+                if (stakedata != 0) {
+                    let arraycount = stakedata[i];
+                    setFilteredData([filteredData[arraycount]]);
+                }
+            }
+        } else {
+            console.log('⛔️ Checkbox is NOT checked');
+            window.location.reload();
+        }
 
+    };
 
     return (
         <>
@@ -118,7 +135,7 @@ export default function SortSection() {
                                         type="checkbox"
                                         defaultValue=""
                                         id="Staked"
-                                        onClick={() => CheckFilter()}
+                                        onChange={handleChange}
                                     />
                                     <label
                                         className="form-check-label its_title"
