@@ -85,6 +85,7 @@ export default function SortSection(props) {
                 value: 0,
                 index: 0
             });
+window.location.reload();
         } catch (stake) {
             toast.error(stake.reason);
         }
