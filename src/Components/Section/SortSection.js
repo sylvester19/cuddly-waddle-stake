@@ -7,16 +7,21 @@ import Accordination from '../Section/Accordination'
 export default function SortSection() {
     const { data: signer } = useSigner()
     const [tvldata, setTVLData] = useState(true);
+    const [counter, setCounter] = useState(0);
     const [poolDataArray, setPoolData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
+
+
+
     const stakeContract = new ethers.Contract(stakeAddress, stakingabi, signer);
 
     useEffect(() => {
         getPools()
     }, [])
 
-    // setTimeout(() => {
-    //     getPools()
-    // }, 1000)
+   setTimeout(() => {
+        getPools()
+     }, 1000)
 
 
     const getPools = async () => {
@@ -29,19 +34,36 @@ export default function SortSection() {
         }
         setPoolData(poolData);
         TVLData()
+        if(counter === 0){
+            setFilteredData(poolData)
+            setCounter(1)
+        } else {
+            return
+        }
+       
     }
 
     const SearchFilter = async (event) => {
-        if (!event) {
-            getPools();
+        if (event === '') {
+            setFilteredData(poolDataArray);
         } else {
             for (let i = 0; i <= poolDataArray.length; i++) {
-                let data = poolDataArray[i][7].toNumber();
-                if (`${data}` === event) {
-                    setPoolData([poolDataArray[i]]);
+                let filterData = poolDataArray.filter((item) => {
+                    return item[7].toString().includes(event)
+                })
+                setFilteredData(filterData);
                 }
             }
+            
         }
+    
+
+    const filterData = (i,value,event) => {
+        const filtered = new Array();
+        if ( value === event) {
+            filtered.push(poolDataArray[i]);         
+        }
+        setFilteredData(filtered);
     }
 
     const CheckFilter = async () => {
@@ -64,7 +86,7 @@ export default function SortSection() {
 
         let result = parseInt(dataone) + parseInt(datateo);
 
-        console.log("TVL=>", result)
+        //console.log("TVL=>", result)
 
         setTVLData(result)
     }
@@ -123,7 +145,7 @@ export default function SortSection() {
                     </div>
                 </div>
             </section>
-            <Accordination data={poolDataArray} />
+            <Accordination data={filteredData} />
         </>
     );
 }
